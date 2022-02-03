@@ -1,0 +1,11 @@
+[Unit]
+Description=minecraft Server Save Task
+
+[Service]
+Type=oneshot
+User=minecraft
+ExecStart=/opt/mc/sh/save.sh
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,9 @@
+[Unit]
+Description=minecraft Server Restart Schedule Task
+
+[Timer]
+OnCalendar=*-*-* 04:59:30
+
+[Install]
+WantedBy=multi-user.target
+

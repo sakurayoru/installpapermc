@@ -1,0 +1,10 @@
+[Unit]
+Description=minecraft Server Save Schedule Task
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=600s
+
+[Install]
+WantedBy=multi-user.target
+

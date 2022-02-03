@@ -1,0 +1,15 @@
+[Unit]
+Description=minecraft Server
+After=network.target local-fs.target
+ 
+[Service]
+Type=forking
+User=minecraft
+ExecStart=/opt/mc/sh/start.sh
+ExecStop=/opt/mc/sh/stop.sh
+Restart=always
+KillMode=none
+ 
+[Install]
+WantedBy=multi-user.target
+

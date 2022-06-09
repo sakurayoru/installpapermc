@@ -5,7 +5,7 @@ SERVICE='paper'
 
 ME=$(whoami)
 
-if [ "$ME" == "$USERNAME" ] ; then
+if [ "$ME" = "$USERNAME" ] ; then
   if (screen -list | grep -o "${SERVICE}") > /dev/null ; then
     echo "Stopping $SERVICE"
     screen -p 0 -S $SERVICE -X eval 'stuff "say あと30秒でサーバーが停止します。"\015'

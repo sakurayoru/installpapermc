@@ -7,7 +7,7 @@ SPI_PATH='/opt/mc/server/'
 ME=$(whoami)
 MEM="2G"
 
-if [ "$ME" == "$USERNAME" ] ; then
+if [ "$ME" = "$USERNAME" ] ; then
   if (screen -list | grep -o "${SERVICE}") > /dev/null ; then
     echo "$SERVICE is already running!"
     exit 0;

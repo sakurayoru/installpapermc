@@ -14,8 +14,8 @@ if [ "$ME" == "$USERNAME" ] ; then
     dnf update -y
 
     echo ""
-    echo "install vim java25 epel-release screen"
-    dnf -y install vim wget java-25-openjdk epel-release
+    echo "install vim epel-release screen"
+    dnf -y install vim wget epel-release
     dnf -y install screen
 
     echo ""
@@ -33,12 +33,37 @@ if [ "$ME" == "$USERNAME" ] ; then
     echo "(example:1.18.1)"
     echo "(example:26.2)"
     read -r MINECRAFT_VERSION
+    case "${MINECRAFT_VERSION}" in
+        # Minecraft after 26.1
+        26.*)
+        JAVA_VERSION=25
+            ;;
+    
+        # Minecraft 1.21.x / after 1.20.5
+        1.20.[5-9]|1.20.*|1.21.*)
+            JAVA_VERSION=21
+            ;;
+    
+        # Minecraft 1.18 to 1.20.4
+        1.18.*|1.19.*|1.20.0|1.20.1|1.20.2|1.20.3|1.20.4)
+            JAVA_VERSION=17
+            ;;
+    
+        # Minecraft 1.17.x
+        1.17.*)
+            JAVA_VERSION=16
+            ;;
+    
+        # Minecraft before 1.16.5
+        *)
+            JAVA_VERSION=8
+            ;;
+    esac
+    echo "instal openjdk-$JAVA_VERSION"
+    dnf -y install java-$JAVA_VERSION-openjdk
 
     # First check if the requested version has a stable build
     BUILDS_RESPONSE=$(curl -s -H "User-Agent: $USER_AGENT" https://fill.papermc.io/v3/projects/${PROJECT}/versions/${MINECRAFT_VERSION}/builds)
-    echo ""
-    echo "BUILDS_RESPONSE"
-    echo "$BUILDS_RESPONSE"
     
     # Check if the API returned an error
     if echo "$BUILDS_RESPONSE" | jq -e '.ok == false' > /dev/null 2>&1; then
@@ -92,7 +117,7 @@ if [ "$ME" == "$USERNAME" ] ; then
         curl --output /opt/mc/server/paper.jar $PAPERMC_URL
         echo "Download completed (version: $FOUND_VERSION)"
         BUILD = $(basename "$PAPERMC_URL" .jar)
-        touch /opt/mc/server/paper-"$BUILD"
+        touch "/opt/mc/server/$BUILD"
     else
         echo "No stable builds available for any version :("
         exit 1

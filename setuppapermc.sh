@@ -138,8 +138,8 @@ if [ "$ME" == "$USERNAME" ] ; then
     echo "$VERSION_BUILDS"
         curl --output /opt/mc/server/paper.jar $PAPERMC_URL
         echo "Download completed (version: $FOUND_VERSION)"
-        BUILD = $(basename "$PAPERMC_URL" .jar)
-        touch "/opt/mc/server/$BUILD"
+        echo "" > /opt/mc/server/$(basename "$PAPERMC_URL" .jar)
+
     else
         echo "No stable builds available for any version :("
         exit 1

@@ -19,12 +19,6 @@ if [ "$ME" == "$USERNAME" ] ; then
     dnf -y install screen
 
     echo ""
-    echo "open port 25565/tcp"
-    firewall-cmd --add-port=25565/tcp
-    firewall-cmd --runtime-to-permanent
-    firewall-cmd --list-ports
-
-    echo ""
     echo "create minecraft use directory"
     mkdir -p /opt/mc/{server,sh}
 
@@ -61,6 +55,34 @@ if [ "$ME" == "$USERNAME" ] ; then
     esac
     echo "instal openjdk-$JAVA_VERSION"
     dnf -y install java-$JAVA_VERSION-openjdk
+
+    echo ""
+    echo "Use minecraft Port No?"    
+    read -r MINECRAFT_PORT
+    echo "open port $MINECRAFT_PORT/tcp"
+    firewall-cmd --add-port=$MINECRAFT_PORT/tcp
+    firewall-cmd --runtime-to-permanent
+    firewall-cmd --list-ports
+
+    echo ""
+    echo "Use MC Server name?"
+    echo "example : sakurayoru => sakurayoru Minecraft Server"
+    read -r MINECRAFT_NAME
+
+    echo ""
+    echo "Use MC Server seed?"
+    read -r seed
+
+    echo ""
+    echo "Use MC Server difficulty?"
+    read -r MCdiff
+
+
+
+    echo "difficulty=$MCdiff"  >> /opt/mc/server/server.properties
+    echo "level-seed=$seed"  >> /opt/mc/server/server.properties
+    echo "motd=$MINECRAFT_NAME Minecraft Server" >> /opt/mc/server/server.properties
+    echo "server-port=$MINECRAFT_PORT" >> /opt/mc/server/server.properties
 
     # First check if the requested version has a stable build
     BUILDS_RESPONSE=$(curl -s -H "User-Agent: $USER_AGENT" https://fill.papermc.io/v3/projects/${PROJECT}/versions/${MINECRAFT_VERSION}/builds)

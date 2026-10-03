@@ -5,6 +5,7 @@ Description=minecraft Server Restart Task
 Type=oneshot
 User=minecraft
 ExecStart=/opt/mc/sh/stop.sh
+TimeoutStartSec=2min
 
 [Install]
 WantedBy=multi-user.target
